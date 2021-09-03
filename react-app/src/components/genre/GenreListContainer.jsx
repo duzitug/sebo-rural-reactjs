@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from "react";
 import genreService from "../../services/genreService";
 import MediaCardListGrid from "../common/MediaCardListGrid";
-import LinearIndeterminate from "../common/LinearIndeterminate";
 import MiniDrawer from "../common/MiniDrawer";
 
-
+// TODO add local cache
 function GenreListContainer() {
 
     const [genres, setGenres] = useState([]);
@@ -18,7 +17,6 @@ function GenreListContainer() {
     return (
         <>
             <MiniDrawer>
-                {loading && <LinearIndeterminate/>}
                 <MediaCardListGrid elements={genres}/>
             </MiniDrawer>
 
