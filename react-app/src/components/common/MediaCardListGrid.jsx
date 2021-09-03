@@ -3,6 +3,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import MediaCard from "./MediaCard";
+import LinearIndeterminate from "./LinearIndeterminate";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -43,27 +44,28 @@ export default function MediaCardListGrid({elements = []}) {
         <div className={classes.root}>
             <Grid container spacing={3}>
 
-                {elements.length === 0 ? <h2>Erro: Não foi possível comunicar-se com o servidor. </h2> : null}
+                {elements.length === 0 ? <LinearIndeterminate/> : null}
 
                 {elements.map(element => <Grid item xs={12} sm={6} md={3}>
 
 
-                    {/* caso possua um nome será um curso ou genero */}
-                    {element.nome && <MediaCard cardTitle={element.nome}
-                                                imageTitle={'alt da imagem'}
-                                                imageSrc='/assets/colorful-hardback-books-on-the-shelf.jpeg'
-                                                key={element.nome}
-                                                cardAction='Ver Livros'/>}
+                        {/* caso possua um nome será um curso ou genero */}
+                        {element.nome && <MediaCard cardTitle={element.nome}
+                                                    imageTitle={'alt da imagem'}
+                                                    imageSrc='/assets/colorful-hardback-books-on-the-shelf.jpeg'
+                                                    key={element.nome}
+                                                    cardAction='Ver Livros'/>}
 
-                    {/* caso possua um titulo será um livro */}
-                    {/* // TODO add exibir dados do livro no cartão como sinopse, preço, autor, etc */}
-                    {element.titulo && <MediaCard cardTitle={element.titulo}
-                                                  imageTitle={'alt da imagem'}
-                                                  imageSrc={generateLinkForThumbnail(element.url_foto)}
-                                                  key={element.nome}
-                                                  cardAction='Ver Livros'/>}
+                        {/* caso possua um titulo será um livro */}
+                        {/* // TODO add exibir dados do livro no cartão como sinopse, preço, autor, etc */}
+                        {element.titulo && <MediaCard cardTitle={element.titulo}
+                                                      imageTitle={'alt da imagem'}
+                                                      imageSrc={generateLinkForThumbnail(element.url_foto)}
+                                                      key={element.nome}
+                                                      cardAction='Ver Livros'/>}
 
-                </Grid>)}
+                    </Grid>
+                )}
 
 
             </Grid>
