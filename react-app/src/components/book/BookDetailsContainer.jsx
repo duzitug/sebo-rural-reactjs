@@ -1,13 +1,16 @@
 import React, {useEffect, useState} from "react";
 import bookService from "../../services/bookService";
 import MiniDrawer from "../common/MiniDrawer";
+import MediaCardBookDetails from "./BookDetailsMediaCard";
+import generateLinkForThumbnail from "../../utils/generateLinkForThumbnail";
 
-function BookDetailsContainer() {
+// TODO add material-ui card for book data presentation
+function BookDetailsContainer({ match }) {
 
     const [book, setBook] = useState({});
 
     useEffect(() => {
-        bookService.getBookById(1).then(response => setBook(response.data));
+        bookService.getBookById(match.params.id).then(response => setBook(response.data));
     }, []);
 
 
@@ -17,15 +20,19 @@ function BookDetailsContainer() {
 
                 <h2>{book.id ? null : 'Carregando...'}</h2>
 
-
                 <p>{book.titulo}</p>
                 <p>{book.descricao}</p>
                 <p>{book.autor}</p>
                 <p>{book.preco}</p>
-                <p>{book.curso}</p>
+                <p>{book.course && book.course.nome}</p>
 
+                {console.log(book)}
                 <h1>BookDetails works!</h1>
 
+                <MediaCardBookDetails titulo={book.titulo} autor={book.autor}
+                                      descricao={book.descricao} preco={book.preco}
+                                      curso={book.course ? book.course.nome : null}  genero={book.genre ? book.genre.nome : null}
+                                      urlFoto={book.urlFoto ? generateLinkForThumbnail(book.urlFoto) : null}/>
             </MiniDrawer>
 
         </>
