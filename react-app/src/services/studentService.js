@@ -1,9 +1,17 @@
 import axios from "axios";
 
-const API_URL = 'http://localhost:8080/api/v1/';
+import API_URL from "../config/environment";
+
+const headers = { "Content-Type": "application/json" };
+
+const body = {
+  email: "merciofilho@gmail.com",
+  password: "13423"
+};
 
 const studentService = {
-    getAllStudents: () => axios.get(API_URL + 'students.json')
+  getAllStudents: () => axios.get(API_URL + "students.json"),
+  login: () => axios.post(API_URL + "users/login.json")
 };
 
 export default studentService;
