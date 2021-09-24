@@ -12,12 +12,8 @@ const BookListContainer = () => {
   useEffect(() => {
     axios
       .post(
-        "https://sebo-rural-rest-api-cakephp.herokuapp.com/api/v1/" +
-          "users/login.json",
-        {
-          email: "merciofilho@gmail.com",
-          password: "123"
-        }
+        "http://sebo-rural-rest-api-cakephp.herokuapp.com/api/v1/users/login.json",
+        { email: "merciofilho@gmail.com", password: "123" }
       )
       .then();
   }, []);
