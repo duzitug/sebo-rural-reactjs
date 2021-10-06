@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import bookService from "../../services/bookService";
-import studentService from "../../services/studentService";
 import MediaCardListGrid from "../common/MediaCardListGrid";
 import MiniDrawer from "../common/MiniDrawer";
+import useResource from "../../utils/useResource";
 
 import axios from "axios";
-
+//TODO add custom hook for post?
 const BookListContainer = () => {
-  const [books, setBooks] = useState([]);
+  const books = useResource(
+    "https://sebo-rural-rest-api-cakephp.herokuapp.com/api/v1/books.json"
+  );
 
   useEffect(() => {
     axios
@@ -15,13 +16,9 @@ const BookListContainer = () => {
         "https://sebo-rural-rest-api-cakephp.herokuapp.com/api/v1/users/login.json",
         { email: "merciofilho@gmail.com", password: "123" }
       )
-      .then();
-  }, []);
-
-  useEffect(() => {
-    bookService.getAllBooks().then((response) => {
-      setBooks(response.data);
-    });
+      .then(function (resposta) {
+        return console.log(resposta.data.token);
+      });
   }, []);
 
   return (
