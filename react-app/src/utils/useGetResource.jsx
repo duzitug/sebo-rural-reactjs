@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const useResource = function (resourceUrl) {
+function useGetResource(resourceUrl) {
   const [resource, setResource] = useState([]);
 
   useEffect(
@@ -14,6 +14,6 @@ const useResource = function (resourceUrl) {
   );
 
   return resource;
-};
+}
 
-export default useResource;
+export default useGetResource;
