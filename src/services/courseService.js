@@ -2,7 +2,10 @@ import axios from "axios";
 import API_URL from "../config/environment";
 
 const courseService = {
-  getAllCourses: () => axios.get(API_URL + "courses.json"),
+  getAllCourses: (token) =>
+    axios.get(API_URL + "courses.json", {
+      headers: { Authorization: `Bearer ${token}` }
+    }),
   login: () =>
     axios.post(
       "https://sebo-rural-rest-api-cakephp.herokuapp.com/api/v1/users/login.json",
