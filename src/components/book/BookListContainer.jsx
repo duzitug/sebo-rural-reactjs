@@ -1,25 +1,29 @@
-import React, { useEffect, useState } from "react";
 import MediaCardListGrid from "../common/MediaCardListGrid";
 import MiniDrawer from "../common/MiniDrawer";
-import useResource from "../../utils/useResource";
+import useGetResource from "../../utils/useGetResource";
+import usePostResource from "../../utils/usePostResource";
 
-import axios from "axios";
-
-const BookListContainer = () => {
-  const books = useResource(
+//TODO add custom hook for post?
+function BookListContainer() {
+  const books = useGetResource(
     "https://sebo-rural-rest-api-cakephp.herokuapp.com/api/v1/books.json"
   );
 
-  useEffect(() => {
-    axios
-      .post(
-        "https://sebo-rural-rest-api-cakephp.herokuapp.com/api/v1/users/login.json",
-        { email: "merciofilho@gmail.com", password: "123" }
-      )
-      .then(function (resposta) {
-        return console.log(resposta.data.token);
-      });
-  }, []);
+  // const token = usePostResource(
+  //   "https://sebo-rural-rest-api-cakephp.herokuapp.com/api/v1/users/login.json",
+  //   { email: "merciofilho@gmail.com", password: "123" }
+  // );
+
+  // useEffect(() => {
+  //   axios
+  //     .post(
+  //       "https://sebo-rural-rest-api-cakephp.herokuapp.com/api/v1/users/login.json",
+  //       { email: "merciofilho@gmail.com", password: "123" }
+  //     )
+  //     .then(function (resposta) {
+  //       return console.log(resposta.data.token);
+  //     });
+  // }, []);
 
   return (
     <>
@@ -28,6 +32,6 @@ const BookListContainer = () => {
       </MiniDrawer>
     </>
   );
-};
+}
 
 export default BookListContainer;
