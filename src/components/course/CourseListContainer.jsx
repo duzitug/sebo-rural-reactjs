@@ -9,12 +9,12 @@ function CourseListContainer() {
   const [courses, setCourses] = useState([]);
   const [token, setToken] = useState(null);
 
-  useEffect(function () {
+  useEffect(function getToken() {
     courseService.login().then((response) => setToken(response.data.token));
   }, []);
 
   useEffect(
-    function () {
+    function getAllCourses() {
       if (token)
         courseService.getAllCourses(token).then((res) => setCourses(res.data));
     },
