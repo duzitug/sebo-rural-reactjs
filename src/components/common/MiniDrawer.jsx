@@ -108,8 +108,9 @@ export default function MiniDrawer({ children }) {
       case "Cursos":
         return history.push("/courses");
       case "Gêneros":
-        console.log("É um Gênero");
         return history.push("/genres");
+      case "Adicionar Gênero":
+        return history.push("/addGenre");
       default:
         console.log("NENHUM");
     }
@@ -176,14 +177,16 @@ export default function MiniDrawer({ children }) {
         </List>
         <Divider />
         <List>
-          {["Adicionar Livro", "Perfil"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          {["Adicionar Livro", "Perfil", "Adicionar Gênero"].map(
+            (text, index) => (
+              <ListItem button onClick={handleToolbarClick} key={text}>
+                <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            )
+          )}
         </List>
       </Drawer>
       <main className={classes.content}>
