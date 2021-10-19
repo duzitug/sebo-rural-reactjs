@@ -3,17 +3,23 @@ import courseService from "../../services/courseService";
 import MediaCardListGrid from "../common/MediaCardListGrid";
 import MiniDrawer from "../common/MiniDrawer";
 
+//TODO guardar o token no localStorage
+
 function CourseListContainer() {
   const [courses, setCourses] = useState([]);
-  const [token, setToken] = useState();
+  const [token, setToken] = useState(null);
 
   useEffect(function () {
-    courseService.login().then((response) => console.log(response.data.token));
+    courseService.login().then((response) => setToken(response.data.token));
   }, []);
 
-  useEffect(function () {
-    courseService.getAllCourses().then((res) => setCourses(res.data));
-  }, []);
+  useEffect(
+    function () {
+      if (token)
+        courseService.getAllCourses(token).then((res) => setCourses(res.data));
+    },
+    [token]
+  );
 
   return (
     <>
