@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import genreService from "../../services/genreService";
-import usePostResource from "../../utils/usePostResource";
+import userService from "../../services/userService";
 
 function GenreAddForm() {
   const [state, setState] = useState({ nome: "" });

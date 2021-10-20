@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import courseService from "../../services/courseService";
+import userService from "../../services/userService";
 import MediaCardListGrid from "../common/MediaCardListGrid";
 import MiniDrawer from "../common/MiniDrawer";
 
@@ -10,7 +11,7 @@ function CourseListContainer() {
   const [token, setToken] = useState(null);
 
   useEffect(function getToken() {
-    courseService.login().then((response) => setToken(response.data.token));
+    userService.login().then((response) => setToken(response.data.token));
   }, []);
 
   useEffect(
