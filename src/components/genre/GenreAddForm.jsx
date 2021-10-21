@@ -4,6 +4,11 @@ import userService from "../../services/userService";
 
 function GenreAddForm() {
   const [state, setState] = useState({ nome: "" });
+  const [token, setToken] = useState(null);
+
+  useEffect(function () {
+    userService.login().then((response) => setToken(response.data.token));
+  }, []);
 
   function handleChange(event) {
     setState({ ...state, [event.target.name]: event.target.value });
@@ -11,7 +16,9 @@ function GenreAddForm() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    genreService.addGenre(state).then((response) => console.log(response));
+    genreService
+      .addGenre(state, token)
+      .then((response) => console.log(response));
   }
 
   return (
