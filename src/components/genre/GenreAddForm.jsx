@@ -6,7 +6,7 @@ function GenreAddForm() {
   const [state, setState] = useState({ nome: "" });
   const [token, setToken] = useState(null);
 
-  useEffect(function () {
+  useEffect(function getToken() {
     userService.login().then((response) => setToken(response.data.token));
   }, []);
 
