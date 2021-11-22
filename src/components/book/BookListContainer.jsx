@@ -2,7 +2,7 @@ import MediaCardListGrid from "../common/MediaCardListGrid";
 import MiniDrawer from "../common/MiniDrawer";
 import useGetResource from "../../utils/useGetResource";
 import usePostResource from "../../utils/usePostResource";
-import { useEffect } from "react";
+import React from "react";
 import axios from "axios";
 
 //TODO add custom hook for post?
@@ -17,7 +17,7 @@ function BookListContainer() {
   //   { email: "merciofilho@gmail.com", password: "123" }
   // );
 
-  useEffect(() => {
+  React.useEffect(() => {
     axios
       .post(
         "https://sebo-rural-rest-api-cakephp.herokuapp.com/api/v1/users/login.json",
