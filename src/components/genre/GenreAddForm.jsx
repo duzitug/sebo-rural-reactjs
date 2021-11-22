@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
+import React from "react";
 import genreService from "../../services/genreService";
 import userService from "../../services/userService";
 
 function GenreAddForm() {
-  const [state, setState] = useState({ nome: "" });
-  const [token, setToken] = useState(null);
+  const [state, setState] = React.useState({ nome: "" });
+  const [token, setToken] = React.useState(null);
 
-  useEffect(function getToken() {
+  React.useEffect(function getToken() {
     userService.login().then((response) => setToken(response.data.token));
   }, []);
 
