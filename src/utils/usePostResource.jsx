@@ -10,7 +10,7 @@ function usePostResource(resourceUrl, body) {
     });
   }, []);
 
-  return [resource];
+  return resource;
 }
 
 export default usePostResource;
