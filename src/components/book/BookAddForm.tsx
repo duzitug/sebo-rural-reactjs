@@ -7,12 +7,14 @@
 import React from "react";
 import { ChangeEvent, FormEvent } from "react";
 
+import axios from "axios";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import bookService from "../../services/bookService";
-import userService from "../../services/studentService";
+import { userService } from "../../services/userService";
 import { Book } from "../../models/Book";
 import { InputLabel, MenuItem, Select } from "@material-ui/core";
 import courseService from "../../services/courseService";
@@ -46,15 +48,14 @@ function BookAddForm() {
   // adicionar o token no cabeçalho da requisição dos cursos
 
   React.useEffect(function getToken() {
+    // por algum motivo maluco esta retornando http 401 não autorizado
     userService.login().then((response) => setToken(response.data.token));
   }, []);
 
   React.useEffect(
     function getAllCourses() {
       if (token)
-        courseService
-          .getAllCourses(token)
-          .then((response) => setCourses(response.data));
+        courseService.getAllCourses(token).then((res) => setCourses(res.data));
     },
     [token]
   );
