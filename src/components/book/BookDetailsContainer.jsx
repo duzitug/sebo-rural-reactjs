@@ -1,18 +1,30 @@
 import React from "react";
 import bookService from "../../services/bookService";
+import courseService from "../../services/courseService";
 import MiniDrawer from "../common/MiniDrawer";
 import MediaCardBookDetails from "./BookDetailsMediaCard";
 import generateLinkForThumbnail from "../../utils/generateLinkForThumbnail";
 
 // TODO add material-ui card for book data presentation
 function BookDetailsContainer({ match }) {
-  const [book, setBook] = React.useState({});
+  const [book, setBook] = React.useState();
+  const [token, setToken] = React.useState(null);
 
-  React.useEffect(() => {
-    bookService
-      .getBookById(match.params.id)
-      .then((response) => setBook(response.data));
+  // pegar token para autorização
+
+  React.useEffect(function getToken() {
+    courseService.login().then((response) => setToken(response.data.token));
   }, []);
+
+  React.useEffect(
+    function getBookById() {
+      if (token)
+        bookService
+          .getBookById(match.params.id, token)
+          .then((response) => setBook(response.data));
+    },
+    [match.params.id, token]
+  );
 
   return (
     <>
