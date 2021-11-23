@@ -7,7 +7,7 @@ import generateLinkForThumbnail from "../../utils/generateLinkForThumbnail";
 
 // TODO add material-ui card for book data presentation
 function BookDetailsContainer({ match }) {
-  const [book, setBook] = React.useState();
+  const [book, setBook] = React.useState({});
   const [token, setToken] = React.useState(null);
 
   // pegar token para autorização
