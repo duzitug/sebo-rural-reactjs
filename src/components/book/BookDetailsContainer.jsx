@@ -6,11 +6,10 @@ import MediaCardBookDetails from "./BookDetailsMediaCard";
 import generateLinkForThumbnail from "../../utils/generateLinkForThumbnail";
 
 // TODO add material-ui card for book data presentation
+// TODO add imagem do livro
 function BookDetailsContainer({ match }) {
   const [book, setBook] = React.useState({});
   const [token, setToken] = React.useState(null);
-
-  // pegar token para autorização
 
   React.useEffect(function getToken() {
     courseService.login().then((response) => setToken(response.data.token));

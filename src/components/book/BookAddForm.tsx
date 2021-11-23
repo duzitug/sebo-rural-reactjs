@@ -12,6 +12,7 @@ import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import bookService from "../../services/bookService";
+import userService from "../../services/studentService";
 import { Book } from "../../models/Book";
 import { InputLabel, MenuItem, Select } from "@material-ui/core";
 import courseService from "../../services/courseService";
@@ -40,10 +41,23 @@ function BookAddForm() {
   });
 
   const [courses, setCourses] = React.useState<Course[]>();
+  const [token, setToken] = React.useState(null);
 
-  React.useEffect(function getAllCourses() {
-    courseService.getAllCourses().then((response) => setCourses(response.data));
+  // adicionar o token no cabeçalho da requisição dos cursos
+
+  React.useEffect(function getToken() {
+    userService.login().then((response) => setToken(response.data.token));
   }, []);
+
+  React.useEffect(
+    function getAllCourses() {
+      if (token)
+        courseService
+          .getAllCourses(token)
+          .then((response) => setCourses(response.data));
+    },
+    [token]
+  );
 
   function handleSubmit(event: any) {
     event.preventDefault();
