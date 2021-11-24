@@ -63,7 +63,6 @@ function BookAddForm() {
   function handleSubmit(event: any) {
     event.preventDefault();
     bookService.addBook(state).then((response) => console.log(response));
-    console.log(event);
   }
 
   function handleChange(event: any) {
@@ -78,34 +77,28 @@ function BookAddForm() {
     } else if (event.target.name === "course_id") {
       setState({ ...state, [event.target.name]: event.target.value });
     }
-
-    console.log(event);
   }
 
   function handleFile(event: any) {
-    console.dir(event.target.type);
+    debugger;
+    const formData = new FormData();
+    formData.append("file", event.target.files[0]);
+    formData.append("upload_preset", "skzrnf97");
+
+    axios
+      .post("https://api.cloudinary.com/v1_1/dxxxwkv7t/image/upload", formData)
+      .then((result) => {
+        console.log(result);
+        setState({ ...state, url_foto: result.data.secure_url });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   return (
     <>
       <Container maxWidth="sm">
-        {/* <form onSubmit={handleSubmit}>
-        <input type="text" name="titulo" placeholder="titulo" onChange={handleChange}/>
-        <br />
-        <input type="text" name='autor' placeholder="autor" onChange={handleChange}/>
-        <br />
-        <textarea name="descricao" id="" cols="30" rows="10" placeholder="descricao" onChange={handleChange}/>
-        <br/>
-        <input type="number" name="preco" placeholder="preco" onChange={handleChange}/>
-        <br />
-        <input type="text" name="curso" placeholder="curso" onChange={handleChange}/>
-        <br />
-        <label htmlFor="choseFile"> Foto do livro </label>
-        <input id="choseFile" type="file" name="arquivo" onChange={handleFile}/>
-        <br/>
-        <button type="submit"> Submeter </button>
-      </form>   */}
-
         <form
           className={classes.root}
           noValidate
@@ -165,7 +158,7 @@ function BookAddForm() {
             id="choseFile"
             type="file"
             name="imagem"
-            onChange={handleChange}
+            onChange={handleFile}
           />
           <br />
           <Button type="submit" variant="contained">
