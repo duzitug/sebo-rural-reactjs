@@ -1,36 +1,40 @@
-import { useState } from "react";
+import React from "react";
 import genreService from "../../services/genreService";
+import userService from "../../services/userService";
 
 function GenreAddForm() {
+  const [state, setState] = React.useState({ nome: "" });
+  const [token, setToken] = React.useState(null);
 
-    const [state, setState] = useState({ nome: ''});
+  React.useEffect(function getToken() {
+    userService.login().then((response) => setToken(response.data.token));
+  }, []);
 
-    function handleChange (event) {
-        setState( { ...state, [event.target.name]: event.target.value } );
-    } 
+  function handleChange(event) {
+    setState({ ...state, [event.target.name]: event.target.value });
+  }
 
-    function handleSubmit(event) {
-        event.preventDefault();
-        genreService.addGenre(state).then(response => console.log(response));
-    }
+  function handleSubmit(event) {
+    event.preventDefault();
+    genreService
+      .addGenre(state, token)
+      .then((response) => console.log(response));
+  }
 
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <input
+          name="nome"
+          type="text"
+          placeholder="nome"
+          onChange={handleChange}
+        />
 
-    return (
-
-        <>
-            <form onSubmit={handleSubmit}>
-
-                <input name="nome" type="text" placeholder="nome" onChange={handleChange}/>
-
-                <button type="submit"> Submeter </button>
-
-            </form>
-
-        </>
-    );
-
-
-
+        <button type="submit"> Submeter </button>
+      </form>
+    </>
+  );
 }
 
 export default GenreAddForm;

@@ -6,7 +6,7 @@ function RegisterForm() {
     senha: "",
     cidade: "",
     descricao: "",
-    valido: false,
+    valido: false
   });
 
   useEffect(() => {
@@ -24,7 +24,7 @@ function RegisterForm() {
   function gerenciarMudancaDoCheckBox(evento) {
     setFormState({
       ...formState,
-      [evento.target.name]: evento.target.checked,
+      [evento.target.name]: evento.target.checked
     });
   }
 

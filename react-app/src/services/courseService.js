@@ -1,8 +1,11 @@
 import axios from "axios";
+import API_URL from "../config/environment";
 
-const API_URL = 'http://localhost:8080/api/v1/';
+const courseService = {
+  getAllCourses: (token) =>
+    axios.get(API_URL + "courses.json", {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+};
 
-const courseService = { getAllCourses: () => axios.get(API_URL + 'courses.json') };
-
-export  default courseService;
-
+export default courseService;

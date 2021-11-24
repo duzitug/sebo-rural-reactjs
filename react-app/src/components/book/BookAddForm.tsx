@@ -4,13 +4,17 @@
 
 // TODO pra que serve mesmo o id antigo? pra salvar as associaçõe antigas?
 
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import React from "react";
+import { ChangeEvent, FormEvent } from "react";
+
+import axios from "axios";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import bookService from "../../services/bookService";
+import { userService } from "../../services/userService";
 import { Book } from "../../models/Book";
 import { InputLabel, MenuItem, Select } from "@material-ui/core";
 import courseService from "../../services/courseService";
@@ -20,29 +24,41 @@ const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       margin: theme.spacing(1),
-      width: "25ch",
-    },
-  },
+      width: "25ch"
+    }
+  }
 }));
 
 function BookAddForm() {
   const classes = useStyles();
 
-  const [state, setState] = useState<Book>({
+  const [state, setState] = React.useState<Book>({
     titulo: "",
     autor: "",
     descricao: "",
     preco: 0,
     course_id: 0,
     url_foto: "",
-    student_id: 57,
+    student_id: 57
   });
 
-  const [courses, setCourses] = useState<Course[]>();
+  const [courses, setCourses] = React.useState<Course[]>();
+  const [token, setToken] = React.useState(null);
 
-  useEffect(() => {
-    courseService.getAllCourses().then( response =>  setCourses(response.data))
+  // adicionar o token no cabeçalho da requisição dos cursos
+
+  React.useEffect(function getToken() {
+    // por algum motivo maluco esta retornando http 401 não autorizado
+    userService.login().then((response) => setToken(response.data.token));
   }, []);
+
+  React.useEffect(
+    function getAllCourses() {
+      if (token)
+        courseService.getAllCourses(token).then((res) => setCourses(res.data));
+    },
+    [token]
+  );
 
   function handleSubmit(event: any) {
     event.preventDefault();
@@ -54,12 +70,12 @@ function BookAddForm() {
     if (
       event.target.type === "text" ||
       event.target.type === "textarea" ||
-      event.target.type === "number" 
+      event.target.type === "number"
     ) {
       setState({ ...state, [event.target.name]: event.target.value });
     } else if (event.target?.type === "file") {
       setState({ ...state, [event.target.name]: event.target.files[0] });
-    } else if( event.target.name === "course_id" ) {
+    } else if (event.target.name === "course_id") {
       setState({ ...state, [event.target.name]: event.target.value });
     }
 
@@ -138,10 +154,9 @@ function BookAddForm() {
             name="course_id"
             onChange={handleChange}
           >
-
-            { courses?.map( (course) =>  <MenuItem value={ course.id }> { course.nome } </MenuItem>  ) }
-
-            
+            {courses?.map((course) => (
+              <MenuItem value={course.id}> {course.nome} </MenuItem>
+            ))}
           </Select>
 
           <br />

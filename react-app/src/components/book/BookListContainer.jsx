@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from "react";
 import MediaCardListGrid from "../common/MediaCardListGrid";
 import MiniDrawer from "../common/MiniDrawer";
-import useResource from "../../utils/useResource";
-
+import useGetResource from "../../utils/useGetResource";
+import usePostResource from "../../utils/usePostResource";
+import React from "react";
 import axios from "axios";
+
 //TODO add custom hook for post?
-const BookListContainer = () => {
-  const books = useResource(
+function BookListContainer() {
+  const books = useGetResource(
     "https://sebo-rural-rest-api-cakephp.herokuapp.com/api/v1/books.json"
   );
 
-  useEffect(() => {
+  // Por que fica sendo chamado indefinidamente?
+  // const token = usePostResource(
+  //   "https://sebo-rural-rest-api-cakephp.herokuapp.com/api/v1/users/login.json",
+  //   { email: "merciofilho@gmail.com", password: "123" }
+  // );
+
+  React.useEffect(() => {
     axios
       .post(
         "https://sebo-rural-rest-api-cakephp.herokuapp.com/api/v1/users/login.json",
@@ -28,6 +35,6 @@ const BookListContainer = () => {
       </MiniDrawer>
     </>
   );
-};
+}
 
 export default BookListContainer;

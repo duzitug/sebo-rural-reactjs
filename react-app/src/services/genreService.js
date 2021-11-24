@@ -1,10 +1,12 @@
 import axios from "axios";
-
-const API_URL = 'http://localhost:8080/api/v1/';
+import API_URL from "../config/environment";
 
 const genreService = {
-    getAllGenres: () => axios.get(API_URL + 'genres.json'),
-    addGenre: ( genre ) => axios.post(`${API_URL}genres.json`, genre),
-}
+  getAllGenres: () => axios.get(API_URL + "genres.json"),
+  addGenre: (genre, token) =>
+    axios.post(`${API_URL}genres.json`, genre, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+};
 
 export default genreService;

@@ -1,10 +1,10 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React from "react";
 
 function useGetResource(resourceUrl) {
-  const [resource, setResource] = useState([]);
+  const [resource, setResource] = React.useState([]);
 
-  useEffect(
+  React.useEffect(
     function () {
       axios.get(resourceUrl).then(function (response) {
         setResource(response.data);

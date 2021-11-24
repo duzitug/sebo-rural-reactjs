@@ -1,17 +1,14 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React from "react";
 
 function usePostResource(resourceUrl, body) {
-  const [resource, setResource] = useState({});
+  const [resource, setResource] = React.useState({});
 
-  useEffect(
-    function () {
-      axios.post(resourceUrl, body).then(function (response) {
-        setResource(response.data);
-      });
-    },
-    [resourceUrl, body]
-  );
+  React.useEffect(function () {
+    axios.post(resourceUrl, body).then(function (response) {
+      setResource(response.data);
+    });
+  }, []);
 
   return resource;
 }
