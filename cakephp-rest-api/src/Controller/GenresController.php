@@ -21,5 +21,8 @@ class GenresController extends AppController
 
         $this->elementTable = $this->Genres;
 
+        $this->Authentication->allowUnauthenticated(['index']);
+
+
     }
 }

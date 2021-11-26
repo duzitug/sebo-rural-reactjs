@@ -139,15 +139,26 @@ $routes->scope('/api/v1/', function (RouteBuilder $routes) {
       ]
     ]);
 
+  // aceitar o método OPTION  
   $routes->resources('Users', [
     'map' => [
-      'logar' => [
-        'action' => 'logar',
+      'login' => [
+        'action' => 'login',
         'method' => 'POST',
-        'path' => '/logar'
+        'path' => '/login'
       ],
     ]
   ]);
+
+  // $routes->resources('Users', [
+  //   'map' => [
+  //     'login' => [
+  //       'action' => 'login',
+  //       'method' => 'OPTIONS',
+  //       'path' => '/login'
+  //     ],
+  //   ]
+  // ]);
 
   $routes->resources('Users', [
     'map' => [

@@ -26,5 +26,8 @@ class CoursesController extends AppController
 
         $this->elementTable = $this->Courses;
 
+       // $this->Authentication->allowUnauthenticated(['index']);
+
+
     }
 }

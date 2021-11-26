@@ -29,20 +29,30 @@ use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 
+// added for authentication
+use Authentication\AuthenticationService;
+use Authentication\AuthenticationServiceInterface;
+use Authentication\AuthenticationServiceProviderInterface;
+use Authentication\Identifier\IdentifierInterface;
+use Authentication\Middleware\AuthenticationMiddleware;
+use Cake\Routing\Router;
+use Psr\Http\Message\ServerRequestInterface;
+
+use Cake\Utility\Security;
+
 /**
  * Application setup class.
  *
  * This defines the bootstrapping logic and middleware layers you
  * want to use in your application.
  */
-class Application extends BaseApplication
+class Application extends BaseApplication implements AuthenticationServiceProviderInterface
 {
 
     public function initialize(): void
     {
       parent::initialize();
 
-      $this->loadComponent('Authentication.Authentication');
     }
 
 
@@ -53,6 +63,7 @@ class Application extends BaseApplication
      */
     public function bootstrap(): void
     {
+
         // Call parent to load bootstrap from files.
         parent::bootstrap();
 
@@ -74,6 +85,12 @@ class Application extends BaseApplication
         }
 
         // Load more plugins here
+
+         $this->addPlugin('Authentication');
+
+         //$this->addPlugin('Cors');
+
+        // $this->addPlugin('ADmad/JwtAuth');
     }
 
     /**
@@ -105,7 +122,11 @@ class Application extends BaseApplication
             // Parse various types of encoded request bodies so that they are
             // available as array through $request->getData()
             // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
-            ->add(new BodyParserMiddleware());
+            ->add(new BodyParserMiddleware())
+
+            // Add the AuthenticationMiddleware. It should be
+            // after routing and body parser.
+            ->add(new AuthenticationMiddleware($this));
 
             // Cross Site Request Forgery (CSRF) Protection Middleware
             // https://book.cakephp.org/4/en/controllers/middleware.html#cross-site-request-forgery-csrf-middleware
@@ -147,47 +168,40 @@ class Application extends BaseApplication
         // Load more plugins here
     }
 
-  /**
-   * Returns a service provider instance.
-   *
-   * @param \Psr\Http\Message\ServerRequestInterface $request Request
-   * @return \Authentication\AuthenticationServiceInterface
-   */
-  public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
-  {
-    $service = new AuthenticationService();
+    /**
+     * Returns a service provider instance.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request Request
+     * @return \Authentication\AuthenticationServiceInterface
+     */
+    public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
+    {
+        $service = new AuthenticationService();
 
-    // Define where users should be redirected to when they are not authenticated
-//    $service->setConfig([
-//      'unauthenticatedRedirect' => Router::url([
-//        'prefix' => false,
-//        'plugin' => null,
-//        'controller' => 'Users',
-//        'action' => 'login',
-//      ]),
-//      'queryParam' => 'redirect',
-//    ]);
+        $fields = [
+            IdentifierInterface::CREDENTIAL_USERNAME => 'email',
+            IdentifierInterface::CREDENTIAL_PASSWORD => 'password'
+        ];
 
-    $fields = [
-      IdentifierInterface::CREDENTIAL_USERNAME => 'email',
-      IdentifierInterface::CREDENTIAL_PASSWORD => 'password'
-    ];
+        // Load the authenticators.
+        $service->loadAuthenticator('Authentication.Jwt', [
+            'secretKey' => Security::getSalt(),
+            'returnPayload' => false,
+        ]);
 
-    // Load the authenticators. Session should be first.
-    $service->loadAuthenticator('Authentication.Session');
-    $service->loadAuthenticator('Authentication.Form', [
-      'fields' => $fields,
-      'loginUrl' => Router::url([
-        'prefix' => false,
-        'plugin' => null,
-        'controller' => 'Users',
-        'action' => 'login',
-      ]),
-    ]);
+        $service->loadAuthenticator('Authentication.Form', [
+            'fields' => $fields,
+        ]);
 
-    // Load identifiers
-    $service->loadIdentifier('Authentication.Password', compact('fields'));
+        // Load identifiers
+        $service->loadIdentifier('Authentication.JwtSubject');
 
-    return $service;
-  }
+        $service->loadIdentifier('Authentication.Password', [
+            'returnPayload' => false,
+            'fields' => $fields,
+        ]);
+
+
+        return $service;
+    }
 }

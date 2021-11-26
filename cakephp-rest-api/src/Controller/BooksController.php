@@ -21,6 +21,8 @@ class BooksController extends AppController
 
         $this->elementTable = $this->Books;
 
+        $this->Authentication->allowUnauthenticated(['index']);
+
     }
 
 
