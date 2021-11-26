@@ -1,8 +1,10 @@
 import React from "react";
 import courseService from "../../services/courseService";
-import userService from "../../services/userService";
+import { userService } from "../../services/userService";
 import MediaCardListGrid from "../common/MediaCardListGrid";
 import MiniDrawer from "../common/MiniDrawer";
+
+// visão dos livros de um determinado curso
 
 function CourseListContainer() {
   const [courses, setCourses] = React.useState([]);
