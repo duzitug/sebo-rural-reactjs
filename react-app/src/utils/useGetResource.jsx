@@ -6,9 +6,12 @@ function useGetResource(resourceUrl) {
 
   React.useEffect(
     function () {
-      axios.get(resourceUrl).then(function (response) {
+      async function getResource() {
+        let response = await axios.get(resourceUrl);
         setResource(response.data);
-      });
+      }
+
+      getResource();
     },
     [resourceUrl]
   );
