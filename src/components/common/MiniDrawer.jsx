@@ -121,6 +121,8 @@ export default function MiniDrawer({ children }) {
     }
   }
 
+  function handleFazerLoginButton() {}
+
   return (
     <div className={classes.root}>
       <CssBaseline />
